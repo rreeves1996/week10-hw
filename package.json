@@ -1,0 +1,18 @@
+{
+  "name": "team-profile-generator",
+  "version": "1.0.0",
+  "description": "week-10-hw",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Ryan Reeves",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^9.0.0",
+    "jest": "^28.1.2"
+  }
+}
