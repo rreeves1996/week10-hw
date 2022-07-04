@@ -4,11 +4,39 @@ const Employee = require('./lib/Employee');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
+const pageTop = 
+`<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+    <title>My Team</title>
+</head>
+<body>
+    <header>
+        <div class="hero">- MY TEAM -</div>
+    </header>
+    <main>
+        <div class="manager-card">`;
+const pageMiddle =
+`       </div>
+        <div class="employee-cards">`;
+const pageBottom = 
+`       </div> 
+    </main>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</body>
+</html>`;
 
 // TODO: Template literal for site index
 
 // Initial prompt request for manager's info
 const initPrompt = async () => {
+    fs.writeFile('./dist/index.html', pageTop, error => 
+        error ? console.error(error) : console.log("Top of page successfully generated"));
+
     await inquirer.prompt([
         {
             type: 'input',
@@ -115,6 +143,8 @@ function generateEmployee(response) {
     case 'Manager':
         let manager = new Manager(response.name, response.id, response.email, response.role, response.officeNumber);
         let employeeCard = ``;
+        fs.appendFile("README.md", licenseSection, (error) => 
+            error ? console.error(error) : console.log("License section successfully generated!"));
         break;
     case 'Engineer':
         let engineer = new Manager(response.name, response.id, response.email, response.role, response.github);
