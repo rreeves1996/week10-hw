@@ -20,9 +20,6 @@ const pageTop =
     </header>
     <main>
         <div class="manager-card">`;
-const pageMiddle =
-`       </div>
-        <div class="employee-cards">`;
 const pageBottom = 
 `       </div> 
     </main>
@@ -34,9 +31,6 @@ const pageBottom =
 
 // Initial prompt request for manager's info
 const initPrompt = async () => {
-    fs.writeFile('./dist/index.html', pageTop, error => 
-        error ? console.error(error) : console.log("Top of page successfully generated"));
-
     await inquirer.prompt([
         {
             type: 'input',
@@ -61,10 +55,70 @@ const initPrompt = async () => {
     ])
     .then(response => {
         response.role = 'Manager';
+
         generateEmployee(response);
     });
 };
 
+const employeePrompt = async (response) => {
+    switch(response.choices){
+    case 'Add Engineer':
+        await inquirer.prompt([
+            {
+                type: 'input',
+                message: "Please enter Engineer's name: ",
+                name: 'name'
+            },
+            {
+                type: 'input',
+                message: "Please enter Engineer's id: ",
+                name: 'id'
+            },
+            {
+                type: 'input',
+                message: "Please enter Engineer's email: ",
+                name: 'email'
+            },
+            {
+                type: 'input',
+                message: "Please enter Engineer's Github: ",
+                name: 'github'
+            }
+        ]).then(engineer => {
+            engineer.role = 'Engineer';
+            generateEmployee(engineer);
+        })
+        break;
+    case 'Add Intern':
+        await inquirer.prompt([
+            {
+                type: 'input',
+                message: "Please enter Intern's name: ",
+                name: 'name'
+            },
+            {
+                type: 'input',
+                message: "Please enter Intern's id: ",
+                name: 'id'
+            },
+            {
+                type: 'input',
+                message: "Please enter Intern's email: ",
+                name: 'email'
+            },
+            {
+                type: 'input',
+                message: "Please enter Intern's School: ",
+                name: 'school'
+            }
+        ]).then(intern => {
+            intern.role = 'Intern';
+            generateEmployee(intern);
+        })
+    default:
+        break;
+    };
+}
 const mainPrompt = async () => {
     await inquirer.prompt([
         {
@@ -73,66 +127,18 @@ const mainPrompt = async () => {
             choices: ['Add Engineer', 'Add Intern', 'Finish building team']
         }
     ]).then(response => {
-        if(response.choices != 'Finish building team') {
-            switch(response.choices){
-            case 'Add Engineer':
-                inquirer.prompt([
-                    {
-                        type: 'input',
-                        message: "Please enter Engineer's name: ",
-                        name: 'name'
-                    },
-                    {
-                        type: 'input',
-                        message: "Please enter Engineer's id: ",
-                        name: 'id'
-                    },
-                    {
-                        type: 'input',
-                        message: "Please enter Engineer's email: ",
-                        name: 'email'
-                    },
-                    {
-                        type: 'input',
-                        message: "Please enter Engineer's Github: ",
-                        name: 'github'
-                    }
-                ]).then(engineer => {
-                    generateEmployee(engineer);
-                })
-                break;
-            case 'Add Add Intern':
-                inquirer.prompt([
-                    {
-                        type: 'input',
-                        message: "Please enter Intern's name: ",
-                        name: 'name'
-                    },
-                    {
-                        type: 'input',
-                        message: "Please enter Intern's id: ",
-                        name: 'id'
-                    },
-                    {
-                        type: 'input',
-                        message: "Please enter Intern's email: ",
-                        name: 'email'
-                    },
-                    {
-                        type: 'input',
-                        message: "Please enter Intern's School: ",
-                        name: 'school'
-                    }
-                ]).then(intern => {
-                    generateEmployee(intern);
-                })
-            default:
-                break;
-            };
-        } else {
-            generatePage();
-        };
+        // if(response.choices != 'Finish building team') {
+        //     employeePrompt(response);
+        // } else {
+        //     generatePage();
+        // };
+        employeePrompt(response);
     });
+}
+function generatePageTop() {
+    fs.writeFile('./dist/index.html', pageTop, error => 
+        error ? console.error(error) : console.log(`\nTop of page successfully generated!\n`))
+    initPrompt();
 }
 function generatePage() {
 
@@ -142,25 +148,76 @@ function generateEmployee(response) {
     switch(response.role) {
     case 'Manager':
         let manager = new Manager(response.name, response.id, response.email, response.role, response.officeNumber);
-        let employeeCard = ``;
-        fs.appendFile("README.md", licenseSection, (error) => 
-            error ? console.error(error) : console.log("License section successfully generated!"));
+        let managerCard = 
+            `   <div class="card">
+                    <div class="card-header">
+                        <h3>${manager.name}</h3>
+                        <h4>${manager.role}</h4>
+                    </div>
+                    <ul>
+                        <li><span>ID:</span> ${manager.id}</li>
+                        <li><span>Email:</span> ${manager.email}</li>
+                        <li><span>Office #:</span> ${manager.officeNumber}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="employee-cards">`;
+        fs.appendFile('./dist/index.html', managerCard, (error) => 
+            error ? console.error(error) : console.log("Manager card successfully generated!"));
         break;
     case 'Engineer':
-        let engineer = new Manager(response.name, response.id, response.email, response.role, response.github);
-
+        let engineer = new Engineer(response.name, response.id, response.email, response.role, response.github);
+        let engineerCard = 
+            `   <div class="card">
+                    <div class="card-header">
+                        <h3>${engineer.name}</h3>
+                        <h4>${engineer.role}</h4>
+                    </div>
+                    <ul>
+                        <li><span>ID:</span> ${engineer.id}</li>
+                        <li><span>Email:</span> ${engineer.email}</li>
+                        <li><span>Github:</span> ${engineer.github}</li>
+                    </ul>
+                </div>`;
+        fs.appendFile('./dist/index.html', engineerCard, (error) => 
+            error ? console.error(error) : console.log("Engineer card successfully generated!"));
         break;
     case 'Intern':
-        let intern = new Manager(response.name, response.id, response.email, response.role, response.school);
-        
+        let intern = new Intern(response.name, response.id, response.email, response.role, response.school);
+        let internCard = 
+            `   <div class="card">
+                    <div class="card-header">
+                        <h3>${intern.name}</h3>
+                        <h4>${intern.role}</h4>
+                    </div>
+                    <ul>
+                        <li><span>ID:</span> ${intern.id}</li>
+                        <li><span>Email:</span> ${intern.email}</li>
+                        <li><span>School:</span> ${intern.school}</li>
+                    </ul>
+                </div>`;
+        fs.appendFile('./dist/index.html', internCard, (error) => 
+            error ? console.error(error) : console.log("Engineer card successfully generated!"));
         break;
     default:
         let employee = new Employee(response.name, response.id, response.email, response.role);
-
+        let employeeCard = 
+            `   <div class="card">
+                    <div class="card-header">
+                        <h3>${employee.name}</h3>
+                        <h4>${employee.role}</h4>
+                    </div>
+                    <ul>
+                        <li><span>ID:</span> ${employee.id}</li>
+                        <li><span>Email:</span> ${employee.email}</li>
+                    </ul>
+                </div>`;
+        fs.appendFile('./dist/index.html', employeeCard, (error) => 
+            error ? console.error(error) : console.log("Employee card successfully generated!"));
         break;
     }
-
     mainPrompt();
 };
 
-initPrompt();
+generatePageTop();
+// initPrompt();
