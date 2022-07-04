@@ -8,7 +8,7 @@ const Intern = require('./lib/Intern');
 // TODO: Template literal for site index
 
 // Initial prompt request for manager's info
-const promptUser = async () => {
+const initPrompt = async () => {
     await inquirer.prompt([
         {
             type: 'input',
@@ -29,49 +29,108 @@ const promptUser = async () => {
             type: 'input',
             message: "Team manager's office number: ",
             name: 'officeNumber'
-        },
-        {
-            type: 'list',
-            message: "Please select number of employees: ",
-            name: 'employeeCount',
-            choices: [1, 2, 3, 4, 5]
         }
     ])
     .then(response => {
+        response.role = 'Manager';
         generateEmployee(response);
     });
 };
 
-// Function to generate employee card
-function generateEmployee(employee) {
-    let newEmployee = new Employee(employee.name, employee.id, employee.email, employee.role);
-
-    switch(employee.role) {
-        case 'Manager':
-            let newManager = new Manager(employee.name, employee.id, employee.email, employee.officeNumber);
-            generateCard(newManager);
-            break;
-        case 'Engineer':
-            let newEngineer = new Engineer(employee.name, employee.id, employee.email, employee.github);
-            generateCard(newEngineer);
-            break;
-        case 'Intern':
-            let newIntern = new Intern(employee.name, employee.id, employee.email, employee.school);
-            generateCard(newIntern);
-            break;
-        default:
-            generateCard(newEmployee);
-            break;
-    }
-};
-
-function generateCard(employee) {
+const mainPrompt = async () => {
+    await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'main',
+            choices: ['Add Engineer', 'Add Intern', 'Finish building team']
+        }
+    ]).then(response => {
+        if(response.choices != 'Finish building team') {
+            switch(response.choices){
+            case 'Add Engineer':
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        message: "Please enter Engineer's name: ",
+                        name: 'name'
+                    },
+                    {
+                        type: 'input',
+                        message: "Please enter Engineer's id: ",
+                        name: 'id'
+                    },
+                    {
+                        type: 'input',
+                        message: "Please enter Engineer's email: ",
+                        name: 'email'
+                    },
+                    {
+                        type: 'input',
+                        message: "Please enter Engineer's Github: ",
+                        name: 'github'
+                    }
+                ]).then(engineer => {
+                    generateEmployee(engineer);
+                })
+                break;
+            case 'Add Add Intern':
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        message: "Please enter Intern's name: ",
+                        name: 'name'
+                    },
+                    {
+                        type: 'input',
+                        message: "Please enter Intern's id: ",
+                        name: 'id'
+                    },
+                    {
+                        type: 'input',
+                        message: "Please enter Intern's email: ",
+                        name: 'email'
+                    },
+                    {
+                        type: 'input',
+                        message: "Please enter Intern's School: ",
+                        name: 'school'
+                    }
+                ]).then(intern => {
+                    generateEmployee(intern);
+                })
+            default:
+                break;
+            };
+        } else {
+            generatePage();
+        };
+    });
+}
+function generatePage() {
 
 }
+// Function to generate employee card
+function generateEmployee(response) {
+    switch(response.role) {
+    case 'Manager':
+        let manager = new Manager(response.name, response.id, response.email, response.role, response.officeNumber);
+        let employeeCard = ``;
+        break;
+    case 'Engineer':
+        let engineer = new Manager(response.name, response.id, response.email, response.role, response.github);
 
-// Function to initialize app
-function init() {
-    promptUser();
+        break;
+    case 'Intern':
+        let intern = new Manager(response.name, response.id, response.email, response.role, response.school);
+        
+        break;
+    default:
+        let employee = new Employee(response.name, response.id, response.email, response.role);
+
+        break;
+    }
+
+    mainPrompt();
 };
 
-init();
+initPrompt();
