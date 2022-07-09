@@ -269,7 +269,7 @@ function generatePage() {
 function generateEmployee(response) {
     switch(response.role) {
     case 'Manager':
-        let manager = new Manager(response.name, response.id, response.email, response.role, response.officeNumber);
+        let manager = new Manager(response.name, response.id, response.email, response.officeNumber, response.role);
         let managerCard = 
             `           <div class="card">
                     <div class="card-header">
@@ -289,7 +289,7 @@ function generateEmployee(response) {
             error ? console.error(error) : console.log("\nManager card successfully generated!"));
         break;
     case 'Engineer':
-        let engineer = new Engineer(response.name, response.id, response.email, response.role, response.github);
+        let engineer = new Engineer(response.name, response.id, response.email, response.github, response.role);
         let engineerCard = 
             `   <div class="card">
                     <div class="card-header">
@@ -306,7 +306,7 @@ function generateEmployee(response) {
             error ? console.error(error) : console.log("\nEngineer card successfully generated!"));
         break;
     case 'Intern':
-        let intern = new Intern(response.name, response.id, response.email, response.role, response.school);
+        let intern = new Intern(response.name, response.id, response.email, response.school, response.role);
         let internCard = 
             `   <div class="card">
                     <div class="card-header">
