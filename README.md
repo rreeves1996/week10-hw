@@ -7,3 +7,6 @@ This project allows you to generate a nicely laid out web-page with your team's 
 
 ## Usage
 To use, simply run index.js through node in your command line. Subsequently, you will be given a series of options and prompts to fill out the relevant info for your team's profiles.
+
+## Demo
+[App demo](https://user-images.githubusercontent.com/102436216/178121546-de8327f6-b631-44f6-ad0e-adedb8d04ae2.mp4)

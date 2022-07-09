@@ -1,0 +1,116 @@
+:root {
+    --white: #fcf8fa;
+    --white-transp: #fcf9fb85;
+    --black: #39263a;
+    --blue-light: #d3e7ef;
+    --blue-outline: #9eccde;
+    --blue-mid: #2e6f95;
+    --blue-dark: #3a46af;
+    --red-light: #b7094c;
+    --red-mid: #892b64;
+    --red-purple: #723c70;
+}
+
+/* CSS RESETS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+html {
+    height: 100%;
+}
+ol, ul {
+    list-style: none;
+}
+
+
+/* MAIN STYLE */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #ceccce;
+}
+
+h1, h2, h3, h4, h5 {
+    filter: drop-shadow(0px 0px 10rem var(--white-transp));
+}
+
+header {
+    display: flex;
+    width: 100%;
+    height: 20%;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--black);
+    color: var(--white);
+    font-size: 400%;
+    letter-spacing: 20px;
+    font-weight: 100;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: inset 0px 0px 40px rgba(0, 0, 0, 0.39);
+    text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.605);
+}
+
+main {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+
+/* EMPLOYEE CARDS */
+
+.employee-cards {
+    width: 40vw;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+
+.card-header {
+    line-height: 1.25;
+    padding: 0.75rem;
+    text-align: center;
+    background-color: var(--blue-mid);
+    width: 200px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color: white;
+    text-transform: uppercase;
+    text-shadow: 0px 1px 2px black;
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.273);
+}
+.card-header h3 {
+    letter-spacing: 2px;
+    font-size: 1.75rem;
+
+}
+
+.card {
+    background-color: var(--blue-light);
+    filter: drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.601));
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.107);
+}
+.card span {
+    font-weight: 500;
+}
+.card ul {
+    padding: 10px;
+    font-weight: 300;
+}
+.card li {
+    line-height: 1.5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
